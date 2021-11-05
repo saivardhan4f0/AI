@@ -1,0 +1,877 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "name": "Untitled10.ipynb",
+      "provenance": [],
+      "authorship_tag": "ABX9TyOhnlxv3b7FJJZEqItZjgET",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/saivardhan4f0/AI/blob/main/assignment%206\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "xHl6EFfA6aW-",
+        "outputId": "dbcbb709-9504-4289-9efa-be86e8372c49"
+      },
+      "source": [
+        "from google.colab import drive\n",
+        "drive.mount('/content/drive')"
+      ],
+      "execution_count": 1,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Mounted at /content/drive\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "xrrfF0H26vSP"
+      },
+      "source": [
+        "import numpy as np\n",
+        "import math as mt\n",
+        "import random\n",
+        "import pandas as pd"
+      ],
+      "execution_count": 2,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "bwtajVs062BJ"
+      },
+      "source": [
+        "import warnings\n",
+        "warnings.filterwarnings('ignore')"
+      ],
+      "execution_count": 3,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 204
+        },
+        "id": "n1zSLlmM6-Vy",
+        "outputId": "f63967f7-8574-49d0-f588-9f5558025c15"
+      },
+      "source": [
+        "data = pd.read_csv('/content/drive/MyDrive/Share slr09asn6.csv')\n",
+        "data.head()"
+      ],
+      "execution_count": 4,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/html": [
+              "<div>\n",
+              "<style scoped>\n",
+              "    .dataframe tbody tr th:only-of-type {\n",
+              "        vertical-align: middle;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe tbody tr th {\n",
+              "        vertical-align: top;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe thead th {\n",
+              "        text-align: right;\n",
+              "    }\n",
+              "</style>\n",
+              "<table border=\"1\" class=\"dataframe\">\n",
+              "  <thead>\n",
+              "    <tr style=\"text-align: right;\">\n",
+              "      <th></th>\n",
+              "      <th>X</th>\n",
+              "      <th>Y</th>\n",
+              "    </tr>\n",
+              "  </thead>\n",
+              "  <tbody>\n",
+              "    <tr>\n",
+              "      <th>0</th>\n",
+              "      <td>7.6</td>\n",
+              "      <td>157</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>1</th>\n",
+              "      <td>7.1</td>\n",
+              "      <td>174</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>2</th>\n",
+              "      <td>8.2</td>\n",
+              "      <td>175</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>3</th>\n",
+              "      <td>7.5</td>\n",
+              "      <td>188</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>4</th>\n",
+              "      <td>7.4</td>\n",
+              "      <td>171</td>\n",
+              "    </tr>\n",
+              "  </tbody>\n",
+              "</table>\n",
+              "</div>"
+            ],
+            "text/plain": [
+              "     X    Y\n",
+              "0  7.6  157\n",
+              "1  7.1  174\n",
+              "2  8.2  175\n",
+              "3  7.5  188\n",
+              "4  7.4  171"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 4
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "ztWmMVy07M6s",
+        "outputId": "9a0367a9-b849-442c-a02c-83be8ceb11fa"
+      },
+      "source": [
+        "data['X']"
+      ],
+      "execution_count": 5,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "0     7.6\n",
+              "1     7.1\n",
+              "2     8.2\n",
+              "3     7.5\n",
+              "4     7.4\n",
+              "5     7.8\n",
+              "6     7.3\n",
+              "7     8.0\n",
+              "8     7.1\n",
+              "9     7.5\n",
+              "10    8.1\n",
+              "11    7.0\n",
+              "12    7.3\n",
+              "13    7.8\n",
+              "14    7.3\n",
+              "15    8.0\n",
+              "16    8.5\n",
+              "17    7.1\n",
+              "18    8.2\n",
+              "19    7.9\n",
+              "20    7.6\n",
+              "21    8.8\n",
+              "22    7.2\n",
+              "23    7.9\n",
+              "24    8.1\n",
+              "25    7.7\n",
+              "26    8.4\n",
+              "27    7.4\n",
+              "28    7.3\n",
+              "29    8.5\n",
+              "30    7.8\n",
+              "31    6.7\n",
+              "32    7.1\n",
+              "33    7.3\n",
+              "Name: X, dtype: float64"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 5
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 204
+        },
+        "id": "alx2aa727SRe",
+        "outputId": "962f793b-5364-4942-afbb-102462e3596e"
+      },
+      "source": [
+        "def normalize (column):\n",
+        "    c_max,c_min=np.max(column),np.min(column)\n",
+        "    for i in range (len(column)):\n",
+        "      column.iloc[i]=(column.iloc[i]-c_min)/(c_max-c_min)\n",
+        "    return c_max,c_min\n",
+        "x1max,x1min=normalize (data['X'])\n",
+        "y1max,y1min=normalize (data['Y'])\n",
+        "data.head()"
+      ],
+      "execution_count": 6,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/html": [
+              "<div>\n",
+              "<style scoped>\n",
+              "    .dataframe tbody tr th:only-of-type {\n",
+              "        vertical-align: middle;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe tbody tr th {\n",
+              "        vertical-align: top;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe thead th {\n",
+              "        text-align: right;\n",
+              "    }\n",
+              "</style>\n",
+              "<table border=\"1\" class=\"dataframe\">\n",
+              "  <thead>\n",
+              "    <tr style=\"text-align: right;\">\n",
+              "      <th></th>\n",
+              "      <th>X</th>\n",
+              "      <th>Y</th>\n",
+              "    </tr>\n",
+              "  </thead>\n",
+              "  <tbody>\n",
+              "    <tr>\n",
+              "      <th>0</th>\n",
+              "      <td>0.428571</td>\n",
+              "      <td>0.537445</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>1</th>\n",
+              "      <td>0.190476</td>\n",
+              "      <td>0.612335</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>2</th>\n",
+              "      <td>0.714286</td>\n",
+              "      <td>0.616740</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>3</th>\n",
+              "      <td>0.380952</td>\n",
+              "      <td>0.674009</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>4</th>\n",
+              "      <td>0.333333</td>\n",
+              "      <td>0.599119</td>\n",
+              "    </tr>\n",
+              "  </tbody>\n",
+              "</table>\n",
+              "</div>"
+            ],
+            "text/plain": [
+              "          X         Y\n",
+              "0  0.428571  0.537445\n",
+              "1  0.190476  0.612335\n",
+              "2  0.714286  0.616740\n",
+              "3  0.380952  0.674009\n",
+              "4  0.333333  0.599119"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 6
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "8m1Vtp7n7XAA",
+        "outputId": "6c6cf5e0-4881-4b71-fb0f-6a4f38c6e0a2"
+      },
+      "source": [
+        "print(data.isnull().sum())"
+      ],
+      "execution_count": 7,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "X    0\n",
+            "Y    0\n",
+            "dtype: int64\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 1000
+        },
+        "id": "0rOpsS6i7f4w",
+        "outputId": "e048df74-da70-4bf7-fd37-e0b887b8a744"
+      },
+      "source": [
+        "m1=data['X'].mean()\n",
+        "m2=data['Y'].mean()\n",
+        "data['X'].fillna(value=m1, inplace=True)\n",
+        "data['Y'].fillna(value=m2, inplace=True)\n",
+        "data"
+      ],
+      "execution_count": 8,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/html": [
+              "<div>\n",
+              "<style scoped>\n",
+              "    .dataframe tbody tr th:only-of-type {\n",
+              "        vertical-align: middle;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe tbody tr th {\n",
+              "        vertical-align: top;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe thead th {\n",
+              "        text-align: right;\n",
+              "    }\n",
+              "</style>\n",
+              "<table border=\"1\" class=\"dataframe\">\n",
+              "  <thead>\n",
+              "    <tr style=\"text-align: right;\">\n",
+              "      <th></th>\n",
+              "      <th>X</th>\n",
+              "      <th>Y</th>\n",
+              "    </tr>\n",
+              "  </thead>\n",
+              "  <tbody>\n",
+              "    <tr>\n",
+              "      <th>0</th>\n",
+              "      <td>0.428571</td>\n",
+              "      <td>0.537445</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>1</th>\n",
+              "      <td>0.190476</td>\n",
+              "      <td>0.612335</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>2</th>\n",
+              "      <td>0.714286</td>\n",
+              "      <td>0.616740</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>3</th>\n",
+              "      <td>0.380952</td>\n",
+              "      <td>0.674009</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>4</th>\n",
+              "      <td>0.333333</td>\n",
+              "      <td>0.599119</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>5</th>\n",
+              "      <td>0.523810</td>\n",
+              "      <td>0.475771</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>6</th>\n",
+              "      <td>0.285714</td>\n",
+              "      <td>0.801762</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>7</th>\n",
+              "      <td>0.619048</td>\n",
+              "      <td>0.682819</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>8</th>\n",
+              "      <td>0.190476</td>\n",
+              "      <td>0.471366</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>9</th>\n",
+              "      <td>0.380952</td>\n",
+              "      <td>0.682819</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>10</th>\n",
+              "      <td>0.666667</td>\n",
+              "      <td>0.792952</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>11</th>\n",
+              "      <td>0.142857</td>\n",
+              "      <td>0.722467</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>12</th>\n",
+              "      <td>0.285714</td>\n",
+              "      <td>1.000000</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>13</th>\n",
+              "      <td>0.523810</td>\n",
+              "      <td>0.308370</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>14</th>\n",
+              "      <td>0.285714</td>\n",
+              "      <td>0.378855</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>15</th>\n",
+              "      <td>0.619048</td>\n",
+              "      <td>0.202643</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>16</th>\n",
+              "      <td>0.857143</td>\n",
+              "      <td>0.207048</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>17</th>\n",
+              "      <td>0.190476</td>\n",
+              "      <td>0.770925</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>18</th>\n",
+              "      <td>0.714286</td>\n",
+              "      <td>0.735683</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>19</th>\n",
+              "      <td>0.571429</td>\n",
+              "      <td>0.528634</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>20</th>\n",
+              "      <td>0.428571</td>\n",
+              "      <td>0.537445</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>21</th>\n",
+              "      <td>1.000000</td>\n",
+              "      <td>0.493392</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>22</th>\n",
+              "      <td>0.238095</td>\n",
+              "      <td>0.431718</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>23</th>\n",
+              "      <td>0.571429</td>\n",
+              "      <td>0.079295</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>24</th>\n",
+              "      <td>0.666667</td>\n",
+              "      <td>0.092511</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>25</th>\n",
+              "      <td>0.476190</td>\n",
+              "      <td>0.343612</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>26</th>\n",
+              "      <td>0.809524</td>\n",
+              "      <td>0.000000</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>27</th>\n",
+              "      <td>0.333333</td>\n",
+              "      <td>0.396476</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>28</th>\n",
+              "      <td>0.285714</td>\n",
+              "      <td>0.180617</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>29</th>\n",
+              "      <td>0.857143</td>\n",
+              "      <td>0.057269</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>30</th>\n",
+              "      <td>0.523810</td>\n",
+              "      <td>0.493392</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>31</th>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.361233</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>32</th>\n",
+              "      <td>0.190476</td>\n",
+              "      <td>0.647577</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>33</th>\n",
+              "      <td>0.285714</td>\n",
+              "      <td>0.229075</td>\n",
+              "    </tr>\n",
+              "  </tbody>\n",
+              "</table>\n",
+              "</div>"
+            ],
+            "text/plain": [
+              "           X         Y\n",
+              "0   0.428571  0.537445\n",
+              "1   0.190476  0.612335\n",
+              "2   0.714286  0.616740\n",
+              "3   0.380952  0.674009\n",
+              "4   0.333333  0.599119\n",
+              "5   0.523810  0.475771\n",
+              "6   0.285714  0.801762\n",
+              "7   0.619048  0.682819\n",
+              "8   0.190476  0.471366\n",
+              "9   0.380952  0.682819\n",
+              "10  0.666667  0.792952\n",
+              "11  0.142857  0.722467\n",
+              "12  0.285714  1.000000\n",
+              "13  0.523810  0.308370\n",
+              "14  0.285714  0.378855\n",
+              "15  0.619048  0.202643\n",
+              "16  0.857143  0.207048\n",
+              "17  0.190476  0.770925\n",
+              "18  0.714286  0.735683\n",
+              "19  0.571429  0.528634\n",
+              "20  0.428571  0.537445\n",
+              "21  1.000000  0.493392\n",
+              "22  0.238095  0.431718\n",
+              "23  0.571429  0.079295\n",
+              "24  0.666667  0.092511\n",
+              "25  0.476190  0.343612\n",
+              "26  0.809524  0.000000\n",
+              "27  0.333333  0.396476\n",
+              "28  0.285714  0.180617\n",
+              "29  0.857143  0.057269\n",
+              "30  0.523810  0.493392\n",
+              "31  0.000000  0.361233\n",
+              "32  0.190476  0.647577\n",
+              "33  0.285714  0.229075"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 8
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "PCXB2bFb7nWQ"
+      },
+      "source": [
+        "from sklearn.model_selection import train_test_split\n",
+        "x_train, x_test, y_train, y_test = train_test_split(data.X, data.Y, test_size = 0.20, random_state = 10)"
+      ],
+      "execution_count": 9,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "qdbNvuiH7xX6"
+      },
+      "source": [
+        "m1=random.uniform(-10,10)\n",
+        "m2=random.uniform(-10,10)\n",
+        "c=random.uniform(-10,10)\n",
+        "eta=0.01\n",
+        "max_iter=100000"
+      ],
+      "execution_count": 10,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "tVBm0QK572vi"
+      },
+      "source": [
+        "def gradient(m1,m2,c,x,y):\n",
+        "  m1_deriv=-1*(y-m1*x*x-m2*x-c)*x*x\n",
+        "  m2_deriv=-1*(y-m1*x*x-m2*x-c)*x\n",
+        "  c_deriv=-1*(y-m1*x*x-m2*x-c)\n",
+        "  return m1_deriv,m2_deriv,c_deriv"
+      ],
+      "execution_count": 11,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "VyQQhjPZ74MY",
+        "outputId": "6ffc5a8e-00b3-4d6b-8619-e90e0c3952b0"
+      },
+      "source": [
+        "for iter in range(max_iter):\n",
+        "  for sample in range(x_train.shape[0]):\n",
+        "    del_m1,del_m2,del_c=gradient(m1, m2, c, x_train.iloc[sample], y_train.iloc[sample])\n",
+        "    m1=m1-eta*del_m1\n",
+        "    m2=m2-eta*del_m2\n",
+        "    c=c-eta*del_c\n",
+        "print('model parameter m1, m2 and c',m1,m2,c)"
+      ],
+      "execution_count": 12,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "model parameter m1, m2 and c -0.21080839453697034 -0.13545338659968975 0.5663243740172735\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "PzKkL6O38OXe"
+      },
+      "source": [
+        "y_pred_train = []\n",
+        "for i in x_train:\n",
+        "  y_p_tr = (m1 * i*i)+(m2 * i) + c\n",
+        "  y_pred_train.append(y_p_tr)\n",
+        "y_pred_train = np.array(y_pred_train)"
+      ],
+      "execution_count": 13,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "kZpjYUQf8Wl8"
+      },
+      "source": [
+        "y_pred_test = []\n",
+        "for i in x_test:\n",
+        "  y_p_te = (m1 * i*i)+(m2 * i) + c\n",
+        "  y_pred_test.append(y_p_te)\n",
+        "y_pred_test = np.array(y_pred_test)"
+      ],
+      "execution_count": 14,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "WvernLh08bRk"
+      },
+      "source": [
+        "#Denormalization\n",
+        "x_train=x_train*(x1max-x1min)+x1min\n",
+        "y_train=y_train*(y1max-y1min)+y1min\n",
+        "x_test=x_test*(x1max-x1min)+x1min\n",
+        "y_test=y_test*(y1max-y1min)+y1min\n",
+        "y_pred_train=np.multiply(y_pred_train,(y1max-y1min))+y1min\n",
+        "y_pred_test=np.multiply(y_pred_test,(y1max-y1min))+y1min"
+      ],
+      "execution_count": 15,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "hOhTfDOV8gTk",
+        "outputId": "1e7495b9-7a41-42de-8668-b86a39c097c4"
+      },
+      "source": [
+        "import math\n",
+        "from sklearn.metrics import mean_squared_error \n",
+        "from sklearn.metrics import mean_absolute_error\n",
+        "\n",
+        "\n",
+        "#Training Accuracies\n",
+        "rmse = math.sqrt(mean_squared_error(y_train, y_pred_train)) \n",
+        "print('Root mean square error', rmse) \n",
+        "mse = (mean_squared_error(y_train, y_pred_train)) \n",
+        "print('Mean square error', mse) \n",
+        "mae=mean_absolute_error(y_train, y_pred_train)\n",
+        "print('Mean absolute error', mae)"
+      ],
+      "execution_count": 16,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Root mean square error 48.44861592211551\n",
+            "Mean square error 2347.2683847686644\n",
+            "Mean absolute error 42.41633428999347\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "CNl6PwwQ8lH4",
+        "outputId": "0deea9ce-7510-491f-c70b-53ff16c56262"
+      },
+      "source": [
+        "mse = (mean_squared_error(y_test, y_pred_test)) \n",
+        "print('Mean square error', mse)\n",
+        "mse = mt.sqrt(mean_squared_error(y_test, y_pred_test)) \n",
+        "print('Root mean square error', mse)  \n",
+        "mae=mean_absolute_error(y_test, y_pred_test)\n",
+        "print('Mean absolute error', mae)"
+      ],
+      "execution_count": 17,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Mean square error 4015.1563768996316\n",
+            "Root mean square error 63.365261594186066\n",
+            "Mean absolute error 54.63426878251255\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "D_xRmwGq8qTB",
+        "outputId": "8695226b-c1cf-470c-f0bd-05e45cb5ddc3"
+      },
+      "source": [
+        "x_train['ytrain']=y_train\n",
+        "x_train['ytrainpred']=y_pred_train\n",
+        "x_train"
+      ],
+      "execution_count": 19,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "14                                                          7.3\n",
+              "29                                                          8.5\n",
+              "13                                                          7.8\n",
+              "1                                                           7.1\n",
+              "21                                                          8.8\n",
+              "18                                                          8.2\n",
+              "20                                                          7.6\n",
+              "6                                                           7.3\n",
+              "11                                                            7\n",
+              "32                                                          7.1\n",
+              "19                                                          7.9\n",
+              "26                                                          8.4\n",
+              "4                                                           7.4\n",
+              "24                                                          8.1\n",
+              "10                                                          8.1\n",
+              "31                                                          6.7\n",
+              "33                                                          7.3\n",
+              "8                                                           7.1\n",
+              "30                                                          7.8\n",
+              "16                                                          8.5\n",
+              "25                                                          7.7\n",
+              "28                                                          7.3\n",
+              "27                                                          7.4\n",
+              "17                                                          7.1\n",
+              "0                                                           7.6\n",
+              "15                                                            8\n",
+              "9                                                           7.5\n",
+              "ytrain        14    121.0\n",
+              "29     48.0\n",
+              "13    105.0\n",
+              "1     174....\n",
+              "ytrainpred    [150.86410463960715, 102.04259641217492, 134.3...\n",
+              "Name: X, dtype: object"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 19
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "q6u6Cqqo8ySH",
+        "outputId": "702b6f00-9919-4fac-b2c4-94cb5b57f999"
+      },
+      "source": [
+        "x=input(\"Enter value of input\")\n",
+        "estimation=m1*float(x)*float(x)+m2*float(x)+c\n",
+        "print(\"estimated output:\",estimation)"
+      ],
+      "execution_count": 20,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Enter value of input5\n",
+            "estimated output: -5.3811524224054335\n"
+          ]
+        }
+      ]
+    }
+  ]
+}
